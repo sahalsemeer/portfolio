@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { ArrowRight, Download, Github, Linkedin, Mail } from "lucide-react";
 
 const Hero = () => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
     <section
       id="home"
@@ -86,12 +88,15 @@ const Hero = () => {
         {/* Image / Graphic Content */}
         <div className="relative hidden md:flex justify-center items-center opacity-0 animate-[fade-in_1.5s_ease-out_forwards]">
           <div className="w-[400px] h-[400px] rounded-full border border-gray-800 flex items-center justify-center relative">
-            <div className="w-[300px] h-[300px] rounded-full glass border-brand-500/20 flex items-center justify-center overflow-hidden">
+            <div
+              className={`w-[300px] h-[300px] rounded-full glass border-brand-500/20 flex items-center justify-center overflow-hidden ${!imageLoaded ? "animate-pulse bg-gray-800/40" : ""}`}
+            >
               {/* Inserted the user profile image explicitly */}
               <img
                 src="https://res.cloudinary.com/deaqvjyir/image/upload/v1771769723/pp_v23mlb.png"
                 alt="Sahal Sameer Profile"
-                className="w-full h-full object-cover object-top grayscale"
+                className={`w-full h-full object-cover object-top grayscale transition-opacity duration-700 ease-in-out ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                onLoad={() => setImageLoaded(true)}
               />
             </div>
           </div>
