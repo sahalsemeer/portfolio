@@ -1,25 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Github, Linkedin, Mail } from "lucide-react";
 
+const navLinks = [
+  { name: "Home", href: "#home" },
+  { name: "About", href: "#about" },
+  { name: "Skills", href: "#skills" },
+  { name: "Projects", href: "#projects" },
+  { name: "Contact", href: "#contact" },
+];
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      const sections = navLinks.map((link) => link.href.substring(1));
+      let currentSection = "home";
+
+      sections.forEach((section) => {
+        const element = document.getElementById(section);
+        if (element) {
+          const top = element.offsetTop;
+          const height = element.offsetHeight;
+          if (
+            window.scrollY >= top - 150 &&
+            window.scrollY < top + height - 150
+          ) {
+            currentSection = section;
+          }
+        }
+      });
+
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.offsetHeight - 50
+      ) {
+        currentSection = "contact";
+      }
+
+      setActiveSection(currentSection);
     };
+
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
-  ];
 
   return (
     <nav
@@ -37,16 +67,23 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           <ul className="flex items-center gap-8 text-sm font-medium text-gray-300">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <a
-                  href={link.href}
-                  className="hover:text-brand-400 transition-colors"
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.substring(1);
+              return (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className={`transition-colors ${
+                      isActive
+                        ? "text-brand-500 font-bold"
+                        : "hover:text-brand-400"
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
           <a
             href="#contact"
@@ -70,17 +107,24 @@ const Navbar = () => {
         className={`md:hidden absolute top-full left-0 w-full glass transition-all duration-300 origin-top ${isMobileMenuOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"}`}
       >
         <ul className="flex flex-col items-center py-6 gap-6 text-lg font-medium text-gray-300">
-          {navLinks.map((link) => (
-            <li key={link.name}>
-              <a
-                href={link.href}
-                className="hover:text-brand-400"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </a>
-            </li>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.href.substring(1);
+            return (
+              <li key={link.name}>
+                <a
+                  href={link.href}
+                  className={`transition-colors ${
+                    isActive
+                      ? "text-brand-500 font-bold"
+                      : "hover:text-brand-400"
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
+              </li>
+            );
+          })}
           <li>
             <a
               href="#contact"
