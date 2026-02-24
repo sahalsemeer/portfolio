@@ -11,7 +11,7 @@ const Projects = () => {
         "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800",
       tech: ["React", "Node.js", "MongoDB", "AWS EC2", "Socket.io"],
       liveLink: "http://13.203.209.251",
-      githubLink: "https://github.com/sahalsemeer/devTinder",
+      githubLink: "https://github.com/sahalsemeer/DevsHub",
       featured: true,
     },
   ];
